@@ -1,10 +1,8 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import Mapped
-from sqlalchemy.ext.declarative import declarative_base
+from app import db
 
-Base = declarative_base()
-
-class Agent(Base):
+class Agent(db.Model):
     __tablename__ = "agents"
 
     id: Mapped[int] = Column(Integer, primary_key=True)

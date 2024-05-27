@@ -1,12 +1,10 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, relationship
-from sqlalchemy.ext.declarative import declarative_base
+from app import db
 import datetime
 
 
-Base = declarative_base()
-
-class Interaction(Base):
+class Interaction(db.Model):
     __tablename__ = "interactions"
 
     id: Mapped[int] = Column(Integer, primary_key=True)

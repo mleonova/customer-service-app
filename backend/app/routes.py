@@ -2,9 +2,9 @@
 Endpoints of the API
 '''
 
-from app import app
+from app import serviceapp, db
 
-@app.route('/')
-@app.route('/index')
+@serviceapp.route('/')
+@serviceapp.route('/index')
 def index():
     return 'Hello, World!'
