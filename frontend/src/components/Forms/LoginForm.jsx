@@ -18,7 +18,7 @@ const LoginForm = ({ formData, handleChange, handleSubmit, emailValid }) => (
         />
         {!emailValid && (
             <ErrorMessage>
-                Invalid email address. Please use email@example.com format.
+                Invalid. Please use email@example.com format.
             </ErrorMessage>
         )}
         <Label htmlFor="password">Password*</Label>

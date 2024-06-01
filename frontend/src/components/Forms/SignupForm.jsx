@@ -17,7 +17,7 @@ const SignupForm = ({ formData, handleChange, handleSubmit, emailValid }) => (
       onChange={handleChange}
     />
     {!emailValid && (
-      <ErrorMessage>Invalid email address. Please use email@example.com format.</ErrorMessage>
+      <ErrorMessage>Invalid. Please use email@example.com format.</ErrorMessage>
     )}
     <Label htmlFor="password">Password*</Label>
     <Input

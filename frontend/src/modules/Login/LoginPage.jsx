@@ -6,6 +6,7 @@ import FormContainer from "../../components/Containers/FormContainer";
 import Header from "../../components/TextComponents/Header";
 import Paragraph from "../../components/TextComponents/Paragraph";
 import LoginForm from "../../components/Forms/LoginForm";
+import ErrorMessage from "../../components/Forms/ErrorMessage";
 
 const Span = styled.span`
     color: blue;
@@ -21,6 +22,7 @@ function LoginPage() {
         password: ''
     });
     const [emailValid, setEmailValid] = useState(true);
+    const [error, setError] = useState(null);
     const EMAIL_REGEX = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
     const navigate = useNavigate();
 
@@ -59,10 +61,13 @@ function LoginPage() {
                 })
                 .then((data) => {
                     console.log("Success:", data);
+                    setFormData({ email: "", password: "" });
                     navigate("/dashboard");
                 })
                 .catch((error) => {
                     console.error("Error:", error);
+                    setError("Failed to login. Please check your credentials.");
+                    setFormData({ email: "", password: "" });
                 });
         }
     };
@@ -78,6 +83,7 @@ function LoginPage() {
                     handleSubmit={handleSubmit}
                     emailValid={emailValid}
                 />
+                {error && <ErrorMessage>{error}</ErrorMessage>}
                 <Paragraph>Don't have an account?
                     <Span> <StyledLink href="/signup">Sign up</StyledLink></Span></Paragraph>
             </FormContainer>
