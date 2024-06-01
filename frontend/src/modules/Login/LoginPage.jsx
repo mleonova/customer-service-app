@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import FlexColumnContainer from "../../components/Containers/FlexColumnContainer";
+import FlexContainer from "../../components/Containers/FlexColumnContainer";
 import FormContainer from "../../components/Containers/FormContainer";
-import SignupForm from "../../components/Forms/SignupForm";
 import Header from "../../components/TextComponents/Header";
 import Paragraph from "../../components/TextComponents/Paragraph";
+import LoginForm from "../../components/Forms/LoginForm";
 
 const Span = styled.span`
     color: blue;
@@ -15,12 +15,10 @@ const StyledLink = styled.a`
     text-decoration: none;
 `;
 
-const SignupPage = () => {
+function LoginPage() {
     const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-        firstName: "",
-        lastName: ""
+        email: '',
+        password: ''
     });
     const [emailValid, setEmailValid] = useState(true);
     const EMAIL_REGEX = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
@@ -33,31 +31,35 @@ const SignupPage = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormData((prevState) => ({
-            ...prevState,
+        setFormData({
+            ...formData,
             [name]: value
-        }));
+        });
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        let emailValid = validateEmail();
+        const emailValid = validateEmail(formData.email);
         setEmailValid(emailValid);
 
         if (emailValid) {
-            fetch("http://localhost:5000/api/agent/register", {
+            fetch("http://localhost:5000/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(formData)
             })
-                .then((response) => response.json())
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Failed to login");
+                    }
+                    return response.json();
+                })
                 .then((data) => {
                     console.log("Success:", data);
-                    setFormData({ email: "", password: "", firstName: "", lastName: "" });
-                    navigate('/dashboard');
+                    navigate("/dashboard");
                 })
                 .catch((error) => {
                     console.error("Error:", error);
@@ -66,25 +68,21 @@ const SignupPage = () => {
     };
 
     return (
-        <div>
-            <FlexColumnContainer>
-                <Header>Create an account</Header>
-                <Paragraph>Please enter the following fields to create an account.</Paragraph>
-                <FormContainer>
-                    <SignupForm
-                        formData={formData}
-                        handleChange={handleChange}
-                        handleSubmit={handleSubmit}
-                        emailValid={emailValid}
-                    />
-                    <Paragraph>
-                        Already have an account?
-                        <Span><StyledLink href="/login"> Log in</StyledLink></Span>
-                    </Paragraph>
-                </FormContainer>
-            </FlexColumnContainer>
-        </div>
+        <FlexContainer>
+            <Header>Welcome back!</Header>
+            <Paragraph>Please enter your email and password to sign in to your account.</Paragraph>
+            <FormContainer>
+                <LoginForm
+                    formData={formData}
+                    handleChange={handleChange}
+                    handleSubmit={handleSubmit}
+                    emailValid={emailValid}
+                />
+                <Paragraph>Don't have an account?
+                    <Span> <StyledLink href="/signup">Sign up</StyledLink></Span></Paragraph>
+            </FormContainer>
+        </FlexContainer>
     );
 }
 
-export default SignupPage;
+export default LoginPage;
