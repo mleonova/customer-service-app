@@ -1,11 +1,31 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import FlexColumnContainer from "../../components/Containers/FlexColumnContainer";
+import FlexColumnContainer from "../../components/Containers/FlexVerticalContainer";
 import FormContainer from "../../components/Containers/FormContainer";
 import SignupForm from "../../components/Forms/SignupForm";
-import Header from "../../components/TextComponents/Header";
-import Paragraph from "../../components/TextComponents/Paragraph";
+import ErrorMessage from "../../components/Forms/ErrorMessage";
+
+const Header = styled.h1`
+    font-weight: 500;
+    font-style: normal;
+    padding: 100px 50px 20px;
+    font-size: 2rem;
+
+    @media screen and (max-width: 850px) {
+        font-size: 1.8rem;
+        padding: 80px 20px 20px;
+    }
+`;
+
+const Paragraph = styled.p`
+    font-size: 1rem;
+    margin: auto;
+
+    @media screen and (max-width: 850px) {
+        font-size: 0.9rem;
+    }
+`;
 
 const Span = styled.span`
     color: blue;
@@ -24,11 +44,18 @@ const SignupPage = () => {
     });
     const [emailValid, setEmailValid] = useState(true);
     const EMAIL_REGEX = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const validateEmail = () => {
         let emailValid = String(formData.email).match(EMAIL_REGEX);
         return emailValid && emailValid.length > 0;
+    };
+
+    const handleBlur = (event) => {
+        if (event.target.name === "email") {
+            setEmailValid(EMAIL_REGEX.test(event.target.value));
+        }
     };
 
     const handleChange = (event) => {
@@ -57,10 +84,11 @@ const SignupPage = () => {
                 .then((data) => {
                     console.log("Success:", data);
                     setFormData({ email: "", password: "", firstName: "", lastName: "" });
-                    navigate('/dashboard');
+                    navigate("/dashboard");
                 })
                 .catch((error) => {
                     console.error("Error:", error);
+                    setError(error);
                 });
         }
     };
@@ -75,16 +103,26 @@ const SignupPage = () => {
                         formData={formData}
                         handleChange={handleChange}
                         handleSubmit={handleSubmit}
+                        handleBlur={handleBlur}
                         emailValid={emailValid}
                     />
+
+                    {error !== null && (
+                        <ErrorMessage>
+                            Failed to sign up. Please try again.
+                        </ErrorMessage>
+                    )}
+
                     <Paragraph>
                         Already have an account?
-                        <Span><StyledLink href="/login"> Log in</StyledLink></Span>
+                        <Span>
+                            <StyledLink href="/login"> Log in</StyledLink>
+                        </Span>
                     </Paragraph>
                 </FormContainer>
             </FlexColumnContainer>
         </div>
     );
-}
+};
 
 export default SignupPage;

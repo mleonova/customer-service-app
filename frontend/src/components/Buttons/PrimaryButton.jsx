@@ -2,14 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 const StyledButton = styled.button`
-  min-height: 35px;
   background-color: #0bbc20;
-  border: none;
+  width: 100%;
+  min-height: 35px;
   border-radius: 25px;
   color: white;
   font-weight: 500;
   padding: 10px;
-  margin-top: 10px;
   cursor: pointer;
 
   @media screen and (max-width: 850px) {
@@ -17,10 +16,12 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button = ({ ...props }) => {
-    return (
-        <StyledButton {...props} />
-    )
+const PrimaryButton = ({ children, ...props }) => {
+  return (
+    <StyledButton {...props}>
+      {children}
+    </StyledButton>
+  );
 };
 
-export default Button;
+export default PrimaryButton;

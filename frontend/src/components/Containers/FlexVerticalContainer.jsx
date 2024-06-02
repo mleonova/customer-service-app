@@ -10,7 +10,11 @@ const StyledContainer = styled.div`
 `;
 
 const FlexColumnContainer = ({ children }) => {
-    return <StyledContainer>{children}</StyledContainer>;
+  return (
+    <StyledContainer>
+      {children}
+    </StyledContainer>
+  );
 };
 
 export default FlexColumnContainer;

@@ -10,7 +10,7 @@ serviceapp.config.from_object(Config)
 db = SQLAlchemy(serviceapp)
 migrate = Migrate(serviceapp, db)
 
-CORS(serviceapp)
+CORS(serviceapp, origins='http://localhost:3000')
 
 from app.routes.main_routes import main_bp
 from app.routes.auth_routes import auth_bp

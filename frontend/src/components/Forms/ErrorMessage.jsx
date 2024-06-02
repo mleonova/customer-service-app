@@ -4,14 +4,24 @@ import styled from "styled-components";
 const StyledErrorMessage = styled.div`
   color: red;
   font-size: 0.9rem;
-  margin: auto;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
+  text-align: center;
 `;
 
-const ErrorMessage = ({ children, ...props }) => {
+const MessageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ErrorMessage = ({ children }) => {
   return (
-    <StyledErrorMessage {...props}>{children}</StyledErrorMessage>
-  )
+    <MessageContainer>
+      <StyledErrorMessage>
+        {children}
+      </StyledErrorMessage>
+    </MessageContainer>
+  );
 };
 
 export default ErrorMessage;
