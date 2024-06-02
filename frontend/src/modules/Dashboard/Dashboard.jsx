@@ -4,7 +4,6 @@ import SideBar from "../../components/SideBar/SideBar";
 import DashboardTab from "./Dashboard/DashboardTab";
 import CustomerTab from "./Customers/CustomerTab";
 import InteractionsTab from "./Interactions/InteractionTab";
-import LogoutTab from "./LogoutTab";
 
 const DashboardContainer = styled.div`
     padding: 20px 10px;
@@ -24,7 +23,6 @@ const Dashboard = () => {
             {activeTab === 'dashboard' && <DashboardTab />}
             {activeTab === 'customers' && <CustomerTab />}
             {activeTab === 'interactions' && <InteractionsTab />}
-            {activeTab === 'logout' && <LogoutTab />}
         </DashboardContainer>
     );
 };

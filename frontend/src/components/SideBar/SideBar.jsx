@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaUser, FaUsers, FaComment, FaSignOutAlt, FaChartLine } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
+import { FaUsers, FaComment, FaSignOutAlt, FaChartLine } from 'react-icons/fa';
 
 const SidebarContainer = styled.div`
     min-width: 220px;
@@ -8,21 +9,6 @@ const SidebarContainer = styled.div`
     padding: 10px;
     display: flex;
     flex-direction: column;
-`;
-
-const AgentInfo = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 10px;
-    padding: 20px 20px;
-    margin: 20px 0px 0px;
-    color: #0A2463;
-
-    h3 {
-        margin-left: 10px;
-        font-weight: 500;
-    }
 `;
 
 const Divider = styled.div`
@@ -54,13 +40,14 @@ const Tab = styled.div`
 `;
 
 const Sidebar = ({ activeTab, handleTabClick }) => {
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        localStorage.removeItem("agentId");
+        navigate("/");
+    };
+
     return (
         <SidebarContainer>
-            <AgentInfo>
-                <FaUser className="tab-icon" />
-                <h3>Last Name</h3>
-            </AgentInfo>
-            <Divider />
             <Tabs>
                 <Tab active={activeTab === 'dashboard'} onClick={() => handleTabClick('dashboard')}>
                     <FaChartLine className="tab-icon" />
@@ -75,7 +62,7 @@ const Sidebar = ({ activeTab, handleTabClick }) => {
                     <span>Interactions</span>
                 </Tab>
                 <Divider />
-                <Tab onClick={() => handleTabClick('logout')}>
+                <Tab onClick={() => handleLogout()}>
                     <FaSignOutAlt className="tab-icon" />
                     <span>Logout</span>
                 </Tab>

@@ -31,7 +31,7 @@ const TableRow = ({ interaction, onDelete, onUpdate }) => {
             <td>{interaction.created_at}</td>
             <td>{interaction.type}</td>
             <td>{interaction.content}</td>
-            <td><UpdateButton onClick={handleUpdate}>Update</UpdateButton></td>
+            <td><UpdateButton onClick={handleUpdate}>View</UpdateButton></td>
             <td><DeleteButton onClick={handleDelete}>Delete</DeleteButton></td>
         </TableRowContainer>
     );

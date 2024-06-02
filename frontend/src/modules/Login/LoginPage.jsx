@@ -77,6 +77,7 @@ const LoginPage = () => {
                 })
                 .then((data) => {
                     console.log("Success:", data);
+                    localStorage.setItem("agentId", data.agent_id);
                     setFormData({ email: "", password: "" });
                     navigate("/dashboard");
                 })

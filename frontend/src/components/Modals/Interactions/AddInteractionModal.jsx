@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PrimaryButton from "../../Buttons/PrimaryButton";
-import Input from "../Input";
 import Label from "../Label";
 
 const ModalBackdrop = styled.div`
@@ -17,6 +16,7 @@ const ModalBackdrop = styled.div`
 `;
 
 const ModalContent = styled.div`
+    width: 60%;
     background-color: white;
     padding: 30px;
     margin: 20px;
@@ -39,6 +39,21 @@ const Title = styled.h3`
 
 const FormField = styled.div`
     margin: 10px;
+
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+        color: #333;
+        background-color: white;
+    }
+
+    option {
+        color: black;
+    }
 `;
 
 const Span = styled.span`
@@ -52,28 +67,55 @@ const ButtonContainer = styled.div`
     margin: 30px 10px 10px;
 `;
 
+const ContentTextarea = styled.textarea`
+    width: 100%;
+    height: 200px;
+    padding: 10px;
+    resize: vertical;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+`;
+
 const AddInteractionModal = ({ isOpen, onClose, onAdd }) => {
-    const [agentId, setAgentId] = useState("");
+    const [customers, setCustomers] = useState([]);
+    const [agentId, setAgentId] = useState(null);
     const [customerId, setCustomerId] = useState("");
-    const [createdAt, setCreatedAt] = useState("");
     const [type, setType] = useState("");
     const [content, setContent] = useState("");
+    const interactionTypes = ["Call", "Email", "Bot"];
+
+    useEffect(() => {
+        const storedId = localStorage.getItem("agentId");
+        setAgentId(storedId);
+
+        fetchCustomers();
+    }, []);
+
+    const fetchCustomers = async () => {
+        try {
+            const response = await fetch("http://localhost:5000/api/customer/customers");
+            const data = await response.json();
+            setCustomers(data);
+        } catch (error) {
+            console.error("Error fetching customers:", error);
+        }
+    };
 
     useEffect(() => {
         if (isOpen) {
-            setAgentId("");
-            setCustomerId("");
-            setCreatedAt("");
-            setType("");
             setContent("");
         }
     }, [isOpen]);
 
     const handleAdd = async () => {
+        const currentDate = new Date().toISOString();
         const interactionData = {
-            agentId,
+            agentId: agentId,
             customerId,
-            createdAt,
+            createdAt: currentDate,
             type,
             content,
         };
@@ -92,45 +134,38 @@ const AddInteractionModal = ({ isOpen, onClose, onAdd }) => {
                 <Title>Add New Interaction</Title>
 
                 <FormField>
-                    <Label>Agent ID*</Label>
-                    <Input
-                        type="text"
-                        required
-                        value={agentId}
-                        onChange={(event) => setAgentId(event.target.value)}
-                    />
-                </FormField>
-                <FormField>
-                    <Label>Customer ID*</Label>
-                    <Input
-                        type="text"
+                    <Label>Customer*</Label>
+                    <select
                         required
                         value={customerId}
                         onChange={(event) => setCustomerId(event.target.value)}
-                    />
-                </FormField>
-                <FormField>
-                    <Label>Created At*</Label>
-                    <Input
-                        type="text"
-                        required
-                        value={createdAt}
-                        onChange={(event) => setCreatedAt(event.target.value)}
-                    />
+                    >
+                        <option value="">Select a customer</option>
+                        {customers.map((customer) => (
+                            <option key={customer.id} value={customer.id}>
+                                {`${customer.id} - ${customer.first_name} ${customer.last_name}`}
+                            </option>
+
+                        ))}
+                    </select>
                 </FormField>
                 <FormField>
                     <Label>Type*</Label>
-                    <Input
-                        type="text"
-                        required
+                    <select
                         value={type}
                         onChange={(event) => setType(event.target.value)}
-                    />
+                    >
+                        <option value="">Select a type</option>
+                        {interactionTypes.map((interactionType) => (
+                            <option key={interactionType} value={interactionType}>
+                                {interactionType}
+                            </option>
+                        ))}
+                    </select>
                 </FormField>
                 <FormField>
                     <Label>Content*</Label>
-                    <Input
-                        type="text"
+                    <ContentTextarea
                         required
                         value={content}
                         onChange={(event) => setContent(event.target.value)}
@@ -144,7 +179,7 @@ const AddInteractionModal = ({ isOpen, onClose, onAdd }) => {
                 </ButtonContainer>
 
             </ModalContent>
-        </ModalBackdrop >
+        </ModalBackdrop>
     );
 };
 

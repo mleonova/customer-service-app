@@ -5,14 +5,7 @@ import TableRow from "../../../components/Tables/InteractionsTable/TableRow";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import InteractionModal from "../../../components/Modals/Interactions/AddInteractionModal";
 import UpdateInteractionModal from "../../../components/Modals/Interactions/UpdateInteractionModal";
-
-const TabContainer = styled.div`
-    height: 100vh;
-    padding: 10px;
-    margin-left: 20px;
-    display: flex;
-    flex-direction: column;
-`;
+import TabContainer from "../../../components/Containers/TabContainer";
 
 const TableHeader = styled.div`
     padding: 20px;
@@ -48,6 +41,16 @@ const Table = styled.table`
         font-size: 1rem;
         font-weight: 500;
     }
+
+    td {
+        padding: 10px 30px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 `;
 
 const Span = styled.span`
@@ -61,6 +64,10 @@ const InteractionTab = () => {
     const [interactions, setInteractions] = useState([]);
     const [selectedInteraction, setSelectedInteraction] = useState(null);
 
+    useEffect(() => {
+        fetchInteractions();
+    }, []);
+
     const fetchInteractions = async () => {
         try {
             const response = await fetch("http://localhost:5000/api/interaction/interactions");
@@ -70,10 +77,6 @@ const InteractionTab = () => {
             console.error("Error fetching interactions:", error);
         }
     };
-
-    useEffect(() => {
-        fetchInteractions();
-    }, []);
 
     const filteredInteractions = interactions.filter((interaction) => {
         return (

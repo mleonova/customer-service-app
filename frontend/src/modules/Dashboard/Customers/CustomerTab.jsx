@@ -5,14 +5,7 @@ import TableRow from "../../../components/Tables/CustomerTable/TableRow";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import CustomerModal from "../../../components/Modals/Customers/AddCustomerModal";
 import UpdateCustomerModal from "../../../components/Modals/Customers/UpdateCustomerModal";
-
-const TabContainer = styled.div`
-    height: 100vh;
-    padding: 10px;
-    margin-left: 20px;
-    display: flex;
-    flex-direction: column;
-`;
+import TabContainer from "../../../components/Containers/TabContainer";
 
 const TableHeader = styled.div`
     padding: 20px;
