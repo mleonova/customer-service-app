@@ -4,15 +4,33 @@ import SignupButton from '../../components/Buttons/SignupButton';
 import LoginButton from '../../components/Buttons/LoginButton';
 
 
-const Container = styled.div`
-    padding: 30px;
+const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 20px;
+
+  h1 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    color: #0BBC20;
+  }
+
+  p {
+    align-text: center;
+    font-size: 1.2rem;
+    margin: 30px 20px;
+  }
 `;
 
 const Header = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 20px 40px;
+  border-bottom: 0.75px solid rgba(112, 112, 112, 0.5);
 
   h3 {
     color: #0A2463;
@@ -24,49 +42,40 @@ const Header = styled.header`
 `;
 
 const Footer = styled.footer`
-  text-align: center;
-  padding: 20px;
-  border-bottom: 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 0.75px solid rgba(112, 112, 112, 0.5);
+  padding: 40px 20px;
 `;
 
 const Body = styled.div`
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  align-text: center;
   height: 80vh;
-
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 500;
-    color: #0BBC20;
-    margin: 20px;
-  }
-  
-  p {
-    font-size: 1.2rem;
-    margin-bottom: 40px;
-  }
+  margin: auto;
 `;
 
 const HomePage = () => {
-    return (
-        <Container>
-            <Header>
-                <h3>FEELING<span>HEARD</span></h3>
-                <LoginButton>Login</LoginButton>
-            </Header>
-            <Body>
-                <h1>Customer Service App</h1>
-                <p>Place where you can record and manage interactions with customers.</p>
-                <SignupButton>Sign Up</SignupButton>
-            </Body>
-            <Footer>
-                <p>With &hearts; by Margarita Leonova</p>
-            </Footer>
-        </Container>
-    );
+  return (
+    <div>
+      <Header>
+        <h3>FEELING<span>HEARD</span></h3>
+        <LoginButton>Login</LoginButton>
+      </Header>
+      <Body>
+        <TextContainer>
+          <h1>Customer Service App</h1>
+          <p>Place where you can record and manage interactions with customers.</p>
+          <SignupButton>Sign Up</SignupButton>
+        </TextContainer>
+      </Body>
+      <Footer>
+        <p>With &hearts; by Margarita Leonova</p>
+      </Footer>
+    </div>
+  );
 };
 
 export default HomePage;
