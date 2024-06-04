@@ -1,51 +1,42 @@
+/*
+  CustomerTab Component
+  
+  This component renders a table with customers. 
+  It includes features for searching, adding, updating, and deleting customers. 
+  This component uses various other components such as SearchBar, TableRow, PrimaryButton, AddCustomerModal, and UpdateCustomerModal.
+
+  States:
+  - searchQuery: Holds the current search query.
+  - isAddModalOpen: Boolean to control if the modal to add customer is open.
+  - isUpdateModalOpen: Boolean to control if the modal to update customer is open.
+  - customers: Array to store the list of customers.
+  - selectedCustomer: Object to store the currently selected customer for updating.
+
+  Effects: 
+  - The first useEffect loads customers when the component mounts.
+
+  Methods:
+  - loadCustomers: Fetches customers from the server and updates the state.
+  - handleOpenAddModal: Opens the add customer modal.
+  - handleCloseAddModal: Closes the add customer modal.
+  - handleOpenUpdateModal: Opens the update customer modal and sets the selected customer.
+  - handleCloseUpdateModal: Closes the update customer modal and clears the selected customer.
+  - handleAddCustomer: Adds a new customer and reloads the customers list.
+  - handleUpdateCustomer: Updates a customer and reloads the customers list.
+  - handleDeleteCustomer: Deletes a customer and reloads the customers list.
+  
+  Filtering:
+  - filteredCustomers: Filters the customers based on the search query.
+*/
+
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import SearchBar from "../../../components/Tables/SearchBar";
-import TableRow from "../../../components/Tables/CustomerTable/TableRow";
+import TableRow from "../../../components/Tables/TableRow";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import CustomerModal from "../../../components/Modals/Customers/AddCustomerModal";
 import UpdateCustomerModal from "../../../components/Modals/Customers/UpdateCustomerModal";
-import TabContainer from "../../../components/Containers/TabContainer";
-
-const TableHeader = styled.div`
-    padding: 20px;
-    margin: 20px 0px 0px;
-
-    h3 {
-        font-weight: 500;
-    }
-`;
-
-const SearchContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 40px;
-`;
-
-const ButtonContainer = styled.div`
-    width: 15%;
-`;
-
-const Table = styled.table`
-    border-collapse: collapse;
-    margin: 0px 20px;
-
-    th {
-        padding: 10px 30px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-        background-color: #f9f9f9;
-        color: #191D23;
-        font-size: 1rem;
-        font-weight: 500;
-    }
-`;
-
-const Span = styled.span`
-    margin: 10px;    
-`;
+import { fetchCustomers, addCustomer, updateCustomer, deleteCustomer } from "../Customers/CustomerActions";
+import { Container, TableHeader, SearchContainer, ButtonContainer, Table, Span } from "../TabStyles";
 
 const CustomerTab = () => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -54,26 +45,18 @@ const CustomerTab = () => {
     const [customers, setCustomers] = useState([]);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
 
-    const fetchCustomers = async () => {
-        try {
-            const response = await fetch("http://localhost:5000/api/customer/customers");
-            const data = await response.json();
-            setCustomers(data);
-        } catch (error) {
-            console.error("Error fetching customers:", error);
-        }
-    };
-
     useEffect(() => {
-        fetchCustomers();
+        loadCustomers();
     }, []);
 
-    const filteredCustomers = customers.filter((customer) => {
-        return (
-            customer.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            customer.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            customer.email.toLowerCase().includes(searchQuery.toLowerCase()));
-    });
+    const loadCustomers = async () => {
+        try {
+            const data = await fetchCustomers();
+            setCustomers(data);
+        } catch (error) {
+            console.error("Error loading customers:", error);
+        }
+    };
 
     const handleOpenAddModal = () => {
         setIsAddModalOpen(true);
@@ -81,26 +64,6 @@ const CustomerTab = () => {
 
     const handleCloseAddModal = () => {
         setIsAddModalOpen(false);
-    };
-
-    const handleAddCustomer = async (customerData) => {
-        try {
-            const response = await fetch("http://localhost:5000/api/customer/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(customerData),
-            });
-            if (response.ok) {
-                await fetchCustomers();
-                handleCloseAddModal();
-            } else {
-                throw new Error("Failed to add customer");
-            }
-        } catch (error) {
-            console.error("Error adding customer:", error);
-        }
     };
 
     const handleOpenUpdateModal = (customer) => {
@@ -113,21 +76,21 @@ const CustomerTab = () => {
         setSelectedCustomer(null);
     };
 
+    const handleAddCustomer = async (customerData) => {
+        try {
+            await addCustomer(customerData);
+            await loadCustomers();
+            handleCloseAddModal();
+        } catch (error) {
+            console.error("Error adding customer:", error);
+        }
+    };
+
     const handleUpdateCustomer = async (customerData) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/customer/update/${customerData.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(customerData),
-            });
-            if (response.ok) {
-                await fetchCustomers();
-                handleCloseUpdateModal();
-            } else {
-                throw new Error("Failed to update customer");
-            }
+            await updateCustomer(customerData);
+            await loadCustomers();
+            handleCloseUpdateModal();
         } catch (error) {
             console.error("Error updating customer:", error);
         }
@@ -135,21 +98,29 @@ const CustomerTab = () => {
 
     const handleDeleteCustomer = async (customer) => {
         try {
-            await fetch(`http://localhost:5000/api/customer/delete/${customer.id}`, {
-                method: "DELETE",
-            });
-            await fetchCustomers();
+            await deleteCustomer(customer.id);
+            await loadCustomers();
         } catch (error) {
             console.error("Error deleting customer:", error);
         }
     };
 
+    const filteredCustomers = customers.filter((customer) => {
+        return (
+            customer.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            customer.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            customer.email.toLowerCase().includes(searchQuery.toLowerCase()));
+    });
+
     return (
-        <TabContainer>
+        <Container>
             <TableHeader>
                 <h3>Customers</h3>
                 <SearchContainer>
-                    <SearchBar setSearchQuery={setSearchQuery} />
+                    <SearchBar
+                        setSearchQuery={setSearchQuery}
+                        placeholder="Search by fist name, last name, email"
+                    />
                     <ButtonContainer>
                         <PrimaryButton onClick={handleOpenAddModal}>
                             <Span>+ Create</Span>
@@ -171,14 +142,20 @@ const CustomerTab = () => {
                     {filteredCustomers.map((customer, index) => (
                         <TableRow
                             key={index}
-                            customer={customer}
-                            onDelete={() => handleDeleteCustomer(customer)}
+                            data={customer}
+                            type="customer"
+                            onDelete={() => handleDeleteCustomer(customer.id)}
                             onUpdate={() => handleOpenUpdateModal(customer)}
                         />
+
                     ))}
                 </tbody>
             </Table>
-            <CustomerModal isOpen={isAddModalOpen} onClose={handleCloseAddModal} onAdd={handleAddCustomer} />
+            <CustomerModal
+                isOpen={isAddModalOpen}
+                onClose={handleCloseAddModal}
+                onAdd={handleAddCustomer}
+            />
             {selectedCustomer && (
                 <UpdateCustomerModal
                     isOpen={isUpdateModalOpen}
@@ -187,7 +164,7 @@ const CustomerTab = () => {
                     customer={selectedCustomer}
                 />
             )}
-        </TabContainer>
+        </Container>
     );
 };
 

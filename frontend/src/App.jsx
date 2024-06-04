@@ -6,7 +6,7 @@ import LoginPage from './modules/Login/LoginPage';
 import Dashboard from './modules/Dashboard/Dashboard';
 
 function App() {
-  const isAuthenticated = localStorage.getItem("agentId");
+  const isAuthenticated = localStorage.getItem("agent_id");
 
   return (
     <Routes>

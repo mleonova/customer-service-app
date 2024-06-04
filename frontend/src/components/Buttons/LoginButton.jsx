@@ -11,7 +11,7 @@ const StyledButton = styled.button`
     font-size: 1rem;
 `;
 
-const SignupButton = ({ children, ...props }) => {
+const LoginButton = ({ children, ...props }) => {
     return (
         <Link to="/login">
             <StyledButton {...props}>
@@ -21,4 +21,4 @@ const SignupButton = ({ children, ...props }) => {
     );
 };
 
-export default SignupButton;
+export default LoginButton;

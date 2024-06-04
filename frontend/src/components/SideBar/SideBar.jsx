@@ -42,7 +42,7 @@ const Tab = styled.div`
 const Sidebar = ({ activeTab, handleTabClick }) => {
     const navigate = useNavigate();
     const handleLogout = () => {
-        localStorage.removeItem("agentId");
+        localStorage.removeItem("agent_id");
         navigate("/");
     };
 

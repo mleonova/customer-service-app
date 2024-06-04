@@ -1,61 +1,43 @@
+/*
+  InteractionTab Component
+  
+  This component renders a table with interactions. 
+  It includes features for searching, adding, updating, and deleting interactions. 
+  This component uses various other components such as SearchBar, TableRow, PrimaryButton, AddInteractionModal, and UpdateInteractionModal.
+
+  States:
+  - searchQuery: Holds the current search query.
+  - isAddModalOpen: Boolean to control if the modal to add interaction is open.
+  - isUpdateModalOpen: Boolean to control if the modal to update interaction is open.
+  - interactions: Array to store the list of interactions.
+  - selectedInteraction: Object to store the currently selected interaction for updating.
+
+  Effects: 
+  - The first useEffect loads interactions when the component mounts.
+
+  Methods:
+  - loadInteractions: Fetches interactions from the server and updates the state.
+  - handleOpenAddModal: Opens the add interaction modal.
+  - handleCloseAddModal: Closes the add interaction modal.
+  - handleOpenUpdateModal: Opens the update interaction modal and sets the selected interaction.
+  - handleCloseUpdateModal: Closes the update interaction modal and clears the selected interaction.
+  - handleAddInteraction: Adds a new interaction and reloads the interactions list.
+  - handleUpdateInteraction: Updates an interaction and reloads the interactions list.
+  - handleDeleteInteraction: Deletes an interaction and reloads the interactions list.
+  
+  Filtering:
+  - filteredInteractions: Filters the interactions based on the search query.
+*/
+
+
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import SearchBar from "../../../components/Tables/SearchBar";
-import TableRow from "../../../components/Tables/InteractionsTable/TableRow";
+import TableRow from "../../../components/Tables/TableRow";
 import PrimaryButton from "../../../components/Buttons/PrimaryButton";
 import InteractionModal from "../../../components/Modals/Interactions/AddInteractionModal";
 import UpdateInteractionModal from "../../../components/Modals/Interactions/UpdateInteractionModal";
-import TabContainer from "../../../components/Containers/TabContainer";
-
-const TableHeader = styled.div`
-    padding: 20px;
-    margin: 20px 0px 0px;
-
-    h3 {
-        font-weight: 500;
-    }
-`;
-
-const SearchContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 40px;
-`;
-
-const ButtonContainer = styled.div`
-    width: 15%;
-`;
-
-const Table = styled.table`
-    border-collapse: collapse;
-    margin: 0px 20px;
-
-    th {
-        padding: 10px 30px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-        background-color: #f9f9f9;
-        color: #191D23;
-        font-size: 1rem;
-        font-weight: 500;
-    }
-
-    td {
-        padding: 10px 30px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-        max-width: 200px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-`;
-
-const Span = styled.span`
-    margin: 10px;    
-`;
+import { Container, TableHeader, SearchContainer, ButtonContainer, Table, Span } from "../TabStyles";
+import { fetchInteractions, addInteraction, updateInteraction, deleteInteraction } from "../Interactions/InteractionActions";
 
 const InteractionTab = () => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -65,26 +47,17 @@ const InteractionTab = () => {
     const [selectedInteraction, setSelectedInteraction] = useState(null);
 
     useEffect(() => {
-        fetchInteractions();
+        loadInteractions();
     }, []);
 
-    const fetchInteractions = async () => {
+    const loadInteractions = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/interaction/interactions");
-            const data = await response.json();
+            const data = await fetchInteractions();
             setInteractions(data);
         } catch (error) {
-            console.error("Error fetching interactions:", error);
+            console.error("Error loading interactions:", error);
         }
     };
-
-    const filteredInteractions = interactions.filter((interaction) => {
-        return (
-            interaction.agent_id.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-            interaction.customer_id.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-            interaction.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            interaction.content.toLowerCase().includes(searchQuery.toLowerCase()));
-    });
 
     const handleOpenAddModal = () => {
         setIsAddModalOpen(true);
@@ -92,26 +65,6 @@ const InteractionTab = () => {
 
     const handleCloseAddModal = () => {
         setIsAddModalOpen(false);
-    };
-
-    const handleAddInteraction = async (interactionData) => {
-        try {
-            const response = await fetch("http://localhost:5000/api/interaction/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(interactionData),
-            });
-            if (response.ok) {
-                await fetchInteractions();
-                handleCloseAddModal();
-            } else {
-                throw new Error("Failed to add interaction");
-            }
-        } catch (error) {
-            console.error("Error adding interaction:", error);
-        }
     };
 
     const handleOpenUpdateModal = (interaction) => {
@@ -124,21 +77,21 @@ const InteractionTab = () => {
         setSelectedInteraction(null);
     };
 
+    const handleAddInteraction = async (interactionData) => {
+        try {
+            await addInteraction(interactionData);
+            await loadInteractions();
+            handleCloseAddModal();
+        } catch (error) {
+            console.error("Error adding interaction:", error);
+        }
+    };
+
     const handleUpdateInteraction = async (interactionData) => {
         try {
-            const response = await fetch(`http://localhost:5000/api/interaction/update/${interactionData.id}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(interactionData),
-            });
-            if (response.ok) {
-                await fetchInteractions();
-                handleCloseUpdateModal();
-            } else {
-                throw new Error("Failed to update interaction");
-            }
+            await updateInteraction(interactionData);
+            await loadInteractions();
+            handleCloseUpdateModal();
         } catch (error) {
             console.error("Error updating interaction:", error);
         }
@@ -146,21 +99,30 @@ const InteractionTab = () => {
 
     const handleDeleteInteraction = async (interaction) => {
         try {
-            await fetch(`http://localhost:5000/api/interaction/delete/${interaction.id}`, {
-                method: "DELETE",
-            });
-            await fetchInteractions();
+            await deleteInteraction(interaction.id);
+            await loadInteractions();
         } catch (error) {
             console.error("Error deleting interaction:", error);
         }
     };
 
+    const filteredInteractions = interactions.filter((interaction) => {
+        return (
+            interaction.agent_id.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+            interaction.customer_id.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
+            interaction.type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            interaction.content.toLowerCase().includes(searchQuery.toLowerCase()));
+    });
+
     return (
-        <TabContainer>
+        <Container>
             <TableHeader>
                 <h3>Interactions</h3>
                 <SearchContainer>
-                    <SearchBar setSearchQuery={setSearchQuery} />
+                    <SearchBar
+                        setSearchQuery={setSearchQuery}
+                        placeholder="Search by agent id, customer id, date, type, keywords"
+                    />
                     <ButtonContainer>
                         <PrimaryButton onClick={handleOpenAddModal}>
                             <Span>+ Create</Span>
@@ -184,14 +146,19 @@ const InteractionTab = () => {
                     {filteredInteractions.map((interaction, index) => (
                         <TableRow
                             key={index}
-                            interaction={interaction}
+                            data={interaction}
+                            type="interaction"
                             onDelete={() => handleDeleteInteraction(interaction)}
                             onUpdate={() => handleOpenUpdateModal(interaction)}
                         />
                     ))}
                 </tbody>
             </Table>
-            <InteractionModal isOpen={isAddModalOpen} onClose={handleCloseAddModal} onAdd={handleAddInteraction} />
+            <InteractionModal
+                isOpen={isAddModalOpen}
+                onClose={handleCloseAddModal}
+                onAdd={handleAddInteraction}
+            />
             {selectedInteraction && (
                 <UpdateInteractionModal
                     isOpen={isUpdateModalOpen}
@@ -200,7 +167,7 @@ const InteractionTab = () => {
                     interaction={selectedInteraction}
                 />
             )}
-        </TabContainer>
+        </Container>
     );
 };
 

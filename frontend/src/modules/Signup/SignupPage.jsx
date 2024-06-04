@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import FlexColumnContainer from "../../components/Containers/FlexVerticalContainer";
 import FormContainer from "../../components/Containers/FormContainer";
 import SignupForm from "../../components/Forms/SignupForm";
 import ErrorMessage from "../../components/Forms/ErrorMessage";
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+`;
 
 const Header = styled.h1`
     font-weight: 500;
@@ -95,7 +102,7 @@ const SignupPage = () => {
 
     return (
         <div>
-            <FlexColumnContainer>
+            <Container>
                 <Header>Create an account</Header>
                 <Paragraph>Please enter the following fields to create an account.</Paragraph>
                 <FormContainer>
@@ -120,7 +127,7 @@ const SignupPage = () => {
                         </Span>
                     </Paragraph>
                 </FormContainer>
-            </FlexColumnContainer>
+            </Container>
         </div>
     );
 };

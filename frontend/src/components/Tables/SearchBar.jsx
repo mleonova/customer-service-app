@@ -13,7 +13,7 @@ const SearchInput = styled.input`
     border-radius: 5px;
 `;
 
-const SearchBar = ({ setSearchQuery }) => {
+const SearchBar = ({ setSearchQuery, placeholder }) => {
 
     const handleInputChange = (event) => {
         setSearchQuery(event.target.value);
@@ -23,7 +23,7 @@ const SearchBar = ({ setSearchQuery }) => {
         <SearchBarContainer>
             <SearchInput
                 type="text"
-                placeholder="Search by name, email, keyword ..."
+                placeholder={placeholder}
                 onChange={handleInputChange}
             />
         </SearchBarContainer>

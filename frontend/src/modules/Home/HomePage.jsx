@@ -62,7 +62,7 @@ const HomePage = () => {
     <div>
       <Header>
         <h3>FEELING<span>HEARD</span></h3>
-        <LoginButton>Login</LoginButton>
+        <LoginButton>Log in</LoginButton>
       </Header>
       <Body>
         <TextContainer>

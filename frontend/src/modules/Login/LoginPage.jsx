@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import FlexContainer from "../../components/Containers/FlexVerticalContainer";
 import FormContainer from "../../components/Containers/FormContainer";
 import LoginForm from "../../components/Forms/LoginForm";
 import ErrorMessage from "../../components/Forms/ErrorMessage";
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+`;
 
 const Header = styled.h1`
     font-weight: 500;
@@ -77,7 +84,7 @@ const LoginPage = () => {
                 })
                 .then((data) => {
                     console.log("Success:", data);
-                    localStorage.setItem("agentId", data.agent_id);
+                    localStorage.setItem("agent_id", data.agent_id);
                     setFormData({ email: "", password: "" });
                     navigate("/dashboard");
                 })
@@ -90,7 +97,7 @@ const LoginPage = () => {
     };
 
     return (
-        <FlexContainer>
+        <Container>
             <Header>Welcome back!</Header>
             <Paragraph>Please enter your email and password to sign in to your account.</Paragraph>
             <FormContainer>
@@ -115,7 +122,7 @@ const LoginPage = () => {
                     </Span>
                 </Paragraph>
             </FormContainer>
-        </FlexContainer>
+        </Container>
     );
 };
 
