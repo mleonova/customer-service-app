@@ -36,7 +36,7 @@ def get_customer(id):
 @customer_bp.route('/register', methods=['POST'])
 def add_customer():
     customer = request.json
-    new_customer = Customer(first_name=customer['firstName'], last_name=customer['lastName'], email=customer['email'])
+    new_customer = Customer(first_name=customer['first_name'], last_name=customer['last_name'], email=customer['email'])
     db.session.add(new_customer)
     db.session.commit()
     return jsonify({'message': 'Customer created successfully'}), 201
@@ -49,8 +49,8 @@ def update_customer(id):
 
     if customer:
         data = request.json
-        customer.first_name = data.get('firstName', customer.first_name)
-        customer.last_name = data.get('lastName', customer.last_name)
+        customer.first_name = data.get('first_name', customer.first_name)
+        customer.last_name = data.get('last_name', customer.last_name)
         customer.email = data.get('email', customer.email)
         db.session.commit()
         return jsonify({'message': 'Customer updated successfully'}), 200

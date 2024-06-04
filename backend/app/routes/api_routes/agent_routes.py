@@ -34,7 +34,7 @@ def get_agent(id):
 @agent_bp.route('/register', methods=['POST'])
 def add_agent():
     agent = request.json
-    new_agent = Agent(email=agent['email'], first_name=agent['firstName'], last_name=agent['lastName'])
+    new_agent = Agent(email=agent['email'], first_name=agent['first_name'], last_name=agent['last_name'])
     new_agent.set_password(agent['password'])
     db.session.add(new_agent)
     db.session.commit()

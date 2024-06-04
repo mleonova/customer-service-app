@@ -34,7 +34,7 @@ def get_interaction(id):
 @interaction_bp.route('/register', methods=['POST'])
 def add_interaction():
     interaction = request.json
-    new_interaction = Interaction(agent_id=interaction['agentId'], customer_id=interaction['customerId'], created_at=interaction['createdAt'], type=interaction['type'], content=interaction['content'])
+    new_interaction = Interaction(agent_id=interaction['agent_id'], customer_id=interaction['customer_id'], created_at=interaction['created_at'], type=interaction['type'], content=interaction['content'])
     db.session.add(new_interaction)
     db.session.commit()
     return jsonify({'message': 'Interaction created successfully'}), 201
@@ -47,9 +47,9 @@ def update_interaction(id):
 
     if interaction:
         data = request.json
-        interaction.agent_id = data.get('agentId', interaction.agent_id)
-        interaction.customer_id = data.get('customerId', interaction.customer_id)
-        interaction.created_at = data.get('createdAt', interaction.created_at)
+        interaction.agent_id = data.get('agent_id', interaction.agent_id)
+        interaction.customer_id = data.get('customer_id', interaction.customer_id)
+        interaction.created_at = data.get('created_at', interaction.created_at)
         interaction.type = data.get('type', interaction.type)
         interaction.content = data.get('content', interaction.content)
         db.session.commit()
