@@ -34,7 +34,7 @@
 import React, { useState, useEffect } from "react";
 import { ModalBackdrop, ModalContent, CloseButton, Title, Span, ButtonContainer } from "./ModalStyles";
 import PrimaryButton from "../../Buttons/PrimaryButton";
-import ErrorMessage from "../../Forms/ErrorMessage";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import Form from "../../Forms/Form";
 import Input from "../Input";
 import Label from "../Label";

@@ -1,3 +1,17 @@
+"""
+Interaction Routes
+
+This module defines the routes for managing interaction-related operations in the system.
+
+Routes:
+    - GET /interactions: Retrieve a list of all interactions.
+    - GET /<id>: Retrieve details of a specific interaction by ID.
+    - POST /register: Register a new interaction.
+    - PUT /update/<id>: Update details of an existing interaction.
+    - DELETE /delete/<id>: Delete an interaction.
+
+"""
+
 from flask import Blueprint, request, jsonify
 from app.models import Interaction
 from app import db

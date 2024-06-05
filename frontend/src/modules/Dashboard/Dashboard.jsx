@@ -1,3 +1,10 @@
+/*
+  Dashboard Component
+
+  This component renders the main dashboard layout.
+  The layout includes a sidebar for navigation and a main content area that switches between different tabs.
+*/
+
 import React, { useState } from "react";
 import styled from "styled-components";
 import SideBar from "../../components/SideBar/SideBar";

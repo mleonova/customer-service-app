@@ -1,3 +1,17 @@
+/*
+  Sidebar Component
+  
+  This component represents the sidebar navigation for the application. 
+  It includes tabs for navigating to different sections of the application and a logout button.
+  
+  Props:
+  - activeTab: String representing the active tab.
+  - handleTabClick: Function to handle tab clicks.
+  
+  Methods:
+  - handleLogout: Function to handle logout actions, removing agent_id from local storage and navigating to the login page.
+*/
+
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
@@ -42,8 +56,8 @@ const Tab = styled.div`
 const Sidebar = ({ activeTab, handleTabClick }) => {
     const navigate = useNavigate();
     const handleLogout = () => {
-        localStorage.removeItem("agent_id");
-        navigate("/");
+        localStorage.removeItem('access_token');
+        navigate("/login");
     };
 
     return (

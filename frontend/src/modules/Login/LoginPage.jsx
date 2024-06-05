@@ -1,9 +1,27 @@
+/*
+  LoginPage Component
+ 
+  This component renders a login form allowing users to sign in to their account.
+  It includes input fields for email and password. 
+  The component validates the email format and displays an error message if the login process fails.
+ 
+  States:
+  - formData: Holds the current form data (email, password).
+  - emailValid: Boolean to indicate if the entered email is valid.
+  - error: Stores any error message returned during the login process.
+ 
+  Methods:
+  - handleBlur: Validates the email when the email input field loses focus.
+  - handleChange: Updates the form data state when the user types in the input fields.
+  - handleSubmit: Handles the form submission, sends the login request to the server, and processes the response.
+ */
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FormContainer from "../../components/Containers/FormContainer";
 import LoginForm from "../../components/Forms/LoginForm";
-import ErrorMessage from "../../components/Forms/ErrorMessage";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 const Container = styled.div`
     display: flex;
@@ -69,10 +87,12 @@ const LoginPage = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (emailValid) {
-            fetch("http://localhost:5000/auth/login", {
+            fetch("http://127.0.0.1:5000/auth/login", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Origin": "http://localhost:3000"
                 },
                 body: JSON.stringify(formData)
             })
@@ -83,10 +103,14 @@ const LoginPage = () => {
                     return response.json();
                 })
                 .then((data) => {
-                    console.log("Success:", data);
-                    localStorage.setItem("agent_id", data.agent_id);
-                    setFormData({ email: "", password: "" });
-                    navigate("/dashboard");
+                    if (data.access_token) {
+                        localStorage.setItem("access_token", data.access_token);
+                        setFormData({ email: "", password: "" });
+                        navigate("/dashboard");
+                    }
+                    else {
+                        setError(data.message || "Signup failed");
+                    }
                 })
                 .catch((error) => {
                     console.error("Error:", error);

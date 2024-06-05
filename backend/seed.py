@@ -1,3 +1,9 @@
+"""
+Data Seeder
+
+This module defines functions to seed the database with sample data.
+"""
+
 from app import serviceapp, db
 from app.models import Agent, Customer, Interaction
 

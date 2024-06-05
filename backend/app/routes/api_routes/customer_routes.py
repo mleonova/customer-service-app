@@ -1,3 +1,17 @@
+"""
+Customer Routes
+
+This module defines the routes for managing customer-related operations in the system.
+
+Routes:
+    - GET /customers: Retrieve a list of all customers.
+    - GET /<id>: Retrieve details of a specific customer by ID.
+    - POST /register: Register a new customer.
+    - PUT /update/<id>: Update details of an existing customer.
+    - DELETE /delete/<id>: Delete a customer.
+
+"""
+
 from flask import Blueprint, request, jsonify
 from app.models import Customer
 from app import db
@@ -28,9 +42,6 @@ def get_customer(id):
         return jsonify(customer_data)
     else:
         return jsonify({'message': 'Customer not found'}), 404
-    
-    
-
 
 # endpoint to add a new customer
 @customer_bp.route('/register', methods=['POST'])

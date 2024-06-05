@@ -1,12 +1,14 @@
-import React from "react";
-import styled from "styled-components";
+/*
+  Form Component
+  
+  This component represents a styled form container.
+  
+  Props:
+  - All props accepted by the standard HTML form element.
+*/
 
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 20px;
-`;
+import React from "react";
+import { StyledForm } from "./FormStyles";
 
 const Form = ({ children, ...props }) => {
   return (

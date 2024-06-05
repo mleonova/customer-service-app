@@ -1,3 +1,13 @@
+/*
+  PrimaryButton Component
+  
+  This component represents a primary button styled for use as the primary action button.
+  
+  Props:
+  - children: The content of the button.
+  - props object: Additional attributes to be passed to the button element.
+ */
+
 import React from "react";
 import styled from "styled-components";
 

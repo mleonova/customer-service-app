@@ -1,3 +1,18 @@
+/*
+  Customer API Module
+
+  This module provides functions to interact with the customer API.
+ 
+  Constants:
+  - URL: The base URL for the customer API.
+ 
+  Functions:
+  - fetchCustomers: Fetches a list of customers from the API.
+  - addCustomer: Adds a new customer to the API.
+  - updateCustomer: Updates an existing customer in the API.
+  - deleteCustomer: Deletes a customer from the API.
+*/
+
 const URL = "http://127.0.0.1:5000/api/customer";
 
 export const fetchCustomers = async () => {
@@ -59,9 +74,14 @@ export const deleteCustomer = async (customerId) => {
         if (!response.ok) {
             throw new Error("Failed to delete customer");
         }
-        return await response.json();
+        const responseText = await response.text();
+        if (responseText) {
+            return JSON.parse(responseText);
+        }
+        return {};
     } catch (error) {
         console.error("Error deleting customer:", error);
         throw error;
     }
 };
+

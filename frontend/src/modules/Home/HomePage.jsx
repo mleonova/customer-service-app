@@ -1,3 +1,17 @@
+/*
+  HomePage Component
+ 
+  This component represents the landing page of the Customer Service App.
+  It includes a header with the app name and a login button, a body section
+  with information about the app and signup button, and a footer with credits.
+ 
+  Styled Components:
+  - TextContainer: Container for the main text content.
+  - Header: Container for the header section with app name and login button.
+  - Footer: Container for the footer section with credits.
+  - Body: Container for the main body content.
+ */
+
 import React from 'react';
 import styled from 'styled-components';
 import SignupButton from '../../components/Buttons/SignupButton';

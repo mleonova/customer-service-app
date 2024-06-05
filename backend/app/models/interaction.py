@@ -1,3 +1,24 @@
+"""
+Interaction Model
+
+This module defines the Interaction model, representing interactions between agents and customers in the system.
+
+Attributes:
+    id (int): The unique identifier for the interaction.
+    agent_id (int): The ID of the agent involved in the interaction.
+    customer_id (int): The ID of the customer involved in the interaction.
+    created_at (DateTime): The timestamp indicating when the interaction was created.
+    type (str): The type of interaction.
+    content (str): The content of the interaction.
+
+Relationships:
+    agent (relationship): A relationship with the Agent model.
+    customer (relationship): A relationship with the Customer model.
+
+Functions:
+    __repr__(): Returns a string representation of the Interaction object.
+"""
+
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, relationship
 from app import db

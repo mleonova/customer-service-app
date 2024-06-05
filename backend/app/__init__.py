@@ -1,7 +1,14 @@
+"""
+Service Application
+
+This module initializes the Flask application, configures it, and registers blueprints for different routes.
+"""
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 from .config import Config
 
 serviceapp = Flask(__name__)
@@ -10,7 +17,9 @@ serviceapp.config.from_object(Config)
 db = SQLAlchemy(serviceapp)
 migrate = Migrate(serviceapp, db)
 
-CORS(serviceapp, resources={r"/*": {"origins": "http://localhost:3000"}})
+cors = CORS(serviceapp, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+
+jwt = JWTManager(serviceapp)
 
 from app.routes.main_routes import main_bp
 from app.routes.auth_routes import auth_bp

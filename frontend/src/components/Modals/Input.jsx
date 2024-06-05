@@ -1,3 +1,12 @@
+/*
+  Input Component
+  
+  This component represents a styled input field.
+  
+  Props:
+  - All props accepted by the standard HTML input element.
+*/
+
 import React from "react";
 import styled from "styled-components";
 

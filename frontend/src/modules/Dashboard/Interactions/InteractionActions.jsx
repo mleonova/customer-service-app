@@ -1,3 +1,18 @@
+/*
+  Interaction API Module
+ 
+  This module provides functions to interact with the interaction API.
+ 
+  Constants:
+  - URL: The base URL for the interaction API.
+ 
+  Functions:
+  - fetchInteractions: Fetches a list of interactions from the API.
+  - addInteraction: Adds a new interaction to the API.
+  - updateInteraction: Updates an existing interaction in the API.
+  - deleteInteraction: Deletes an interaction from the API.
+ */
+
 const URL = "http://127.0.0.1:5000/api/interaction";
 
 export const fetchInteractions = async () => {
@@ -56,6 +71,11 @@ export const deleteInteraction = async (interactionId) => {
         if (!response.ok) {
             throw new Error("Failed to delete interaction");
         }
+        const responseText = await response.text();
+        if (responseText) {
+            return JSON.parse(responseText);
+        }
+        return {};
     } catch (error) {
         console.error("Error deleting interaction:", error);
         throw error;

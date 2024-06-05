@@ -1,3 +1,12 @@
+/*
+  ErrorMessage Component
+
+  This component renders an error message with customizable content.
+
+  Props:
+  - children: Content of the error message.
+*/
+
 import React from "react";
 import styled from "styled-components";
 

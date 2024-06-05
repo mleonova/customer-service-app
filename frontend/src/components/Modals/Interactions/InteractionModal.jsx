@@ -39,7 +39,7 @@ import React, { useState, useEffect } from "react";
 import { ModalBackdrop, ModalContent, CloseButton, Title, Span, ButtonContainer, ContentTextarea, Select } from "./ModalStyles";
 import { fetchCustomers } from "../../../modules/Dashboard/Customers/CustomerActions";
 import PrimaryButton from "../../Buttons/PrimaryButton";
-import ErrorMessage from "../../Forms/ErrorMessage";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import Form from "../../Forms/Form";
 import Label from "../Label";
 

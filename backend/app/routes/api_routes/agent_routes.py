@@ -1,4 +1,19 @@
+"""
+Agent Routes
+
+This module defines the routes for managing agent-related operations in the system.
+
+Routes:
+    - GET /agents: Retrieve a list of all agents.
+    - GET /<id>: Retrieve details of a specific agent by ID.
+    - POST /register: Register a new agent.
+    - PUT /update/<id>: Update details of an existing agent.
+    - DELETE /delete/<id>: Delete an agent.
+
+"""
+
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import create_access_token
 from app.models import Agent
 from app import db
 
@@ -38,8 +53,9 @@ def add_agent():
     new_agent.set_password(agent['password'])
     db.session.add(new_agent)
     db.session.commit()
-    return jsonify({'message': 'Agent created successfully'}), 201
-
+    agent_id = new_agent.id
+    access_token = create_access_token(identity=agent_id)
+    return jsonify(access_token=access_token), 200
 
 # endpoint to update an agent
 @agent_bp.route('/update/<id>', methods=['PUT'])

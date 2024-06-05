@@ -1,13 +1,14 @@
+/*
+  Label Component
+  
+  This component represents a styled form label.
+  
+  Props:
+  - All props accepted by the standard HTML label element.
+*/
+
 import React from "react";
-import styled from "styled-components";
-
-const StyledLabel = styled.label`
-  text-align: left;
-
-  @media screen and (max-width: 850px) {
-    font-size: 0.9rem;
-  }
-`;
+import { StyledLabel } from "./FormStyles";
 
 const Label = ({ ...props }) => {
   return (

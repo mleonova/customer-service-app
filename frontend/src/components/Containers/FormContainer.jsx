@@ -1,3 +1,12 @@
+/*
+  FormContainer Component
+
+  This component wraps form-related content in a styled container.
+
+  Props:
+  - children: The content to be wrapped within the form container.
+*/
+
 import React from "react";
 import styled from "styled-components";
 

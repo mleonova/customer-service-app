@@ -1,9 +1,28 @@
+/**
+  SignupPage Component
+ 
+  This component renders a signup form allowing users to create a new account.
+  It includes input fields for email, password, first name, and last name.
+  The component validates the email format and displays an error message if the signup process fails.
+ 
+  States:
+  - formData: Holds the current form data (email, password, first name, last name).
+  - emailValid: Boolean to indicate if the entered email is valid.
+  - error: Stores any error message returned during the signup process.
+ 
+  Methods:
+  - validateEmail: Validates the email format using a regex pattern.
+  - handleBlur: Validates the email when the email input field loses focus.
+  - handleChange: Updates the form data state when the user types in the input fields.
+  - handleSubmit: Handles the form submission, sends the signup request to the server, and processes the response.
+ */
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import FormContainer from "../../components/Containers/FormContainer";
 import SignupForm from "../../components/Forms/SignupForm";
-import ErrorMessage from "../../components/Forms/ErrorMessage";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 const Container = styled.div`
     display: flex;
@@ -46,8 +65,8 @@ const SignupPage = () => {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
-        firstName: "",
-        lastName: ""
+        first_name: "",
+        last_name: ""
     });
     const [emailValid, setEmailValid] = useState(true);
     const EMAIL_REGEX = /^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i;
@@ -80,7 +99,7 @@ const SignupPage = () => {
         setEmailValid(emailValid);
 
         if (emailValid) {
-            fetch("http://localhost:5000/api/agent/register", {
+            fetch("http://127.0.0.1:5000/api/agent/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -89,9 +108,14 @@ const SignupPage = () => {
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log("Success:", data);
-                    setFormData({ email: "", password: "", firstName: "", lastName: "" });
-                    navigate("/dashboard");
+                    if (data.access_token) {
+                        localStorage.setItem("access_token", data.access_token);
+                        setFormData({ email: "", password: "", first_name: "", last_name: "" });
+                        navigate("/dashboard");
+                    }
+                    else {
+                        setError(data.message || "Signup failed");
+                    }
                 })
                 .catch((error) => {
                     console.error("Error:", error);

@@ -1,3 +1,13 @@
+/* 
+  SearchBar Component
+ 
+  This component represents a search bar used for filtering data.
+  
+  Props:
+  - setSearchQuery: Function to set the search query state.
+  - placeholder: Placeholder text for the search input field.
+ */
+
 import React from "react";
 import styled from "styled-components";
 

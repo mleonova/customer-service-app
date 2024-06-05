@@ -109,8 +109,10 @@ const CustomerTab = () => {
         return (
             customer.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             customer.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            customer.email.toLowerCase().includes(searchQuery.toLowerCase()));
+            customer.email.toLowerCase().includes(searchQuery.toLowerCase())
+        );
     });
+
 
     return (
         <Container>
@@ -144,7 +146,7 @@ const CustomerTab = () => {
                             key={index}
                             data={customer}
                             type="customer"
-                            onDelete={() => handleDeleteCustomer(customer.id)}
+                            onDelete={() => handleDeleteCustomer(customer)}
                             onUpdate={() => handleOpenUpdateModal(customer)}
                         />
 

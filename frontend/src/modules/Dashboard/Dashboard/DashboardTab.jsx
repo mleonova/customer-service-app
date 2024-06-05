@@ -1,3 +1,9 @@
+/*
+  DashboardTab Component
+ 
+  This component renders a simple welcome message within a styled container.
+ */
+
 import React from 'react';
 import { Container, TableHeader } from '../TabStyles';
 
