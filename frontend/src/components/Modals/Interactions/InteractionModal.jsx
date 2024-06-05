@@ -36,6 +36,7 @@
  */
 
 import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
 import { ModalBackdrop, ModalContent, CloseButton, Title, Span, ButtonContainer, ContentTextarea, Select } from "./ModalStyles";
 import { fetchCustomers } from "../../../modules/Dashboard/Customers/CustomerActions";
 import PrimaryButton from "../../Buttons/PrimaryButton";
@@ -68,8 +69,13 @@ const InteractionModal = ({ isOpen, onClose, onSubmit, title, interaction = {}, 
     }, [isOpen, interaction]);
 
     useEffect(() => {
-        const stored_id = localStorage.getItem("agent_id");
-        setAgentId(stored_id);
+        const token = localStorage.getItem("access_token");
+
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            const agentIdFromToken = decodedToken.sub;
+            setAgentId(agentIdFromToken);
+        }
 
         loadCustomers();
     }, []);
