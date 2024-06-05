@@ -1,5 +1,7 @@
 # Customer Interaction Management System
 
+![Customer Interaction Management System](path/to/your/home.png)
+
 ## Project Overview
 
 This project is a Customer Service Application designed to manage interactions with customers. It consists of a backend built with Python and SQL, and a frontend built with React. The backend provides a RESTful API for managing customer interactions, while the frontend provides a user-friendly interface for interacting with the API.
