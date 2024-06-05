@@ -2,9 +2,13 @@
 
 ![Customer Interaction Management System](demo/home.png)
 
-## Project Overview
+## Overview
 
-This project is a Customer Service Application designed to manage interactions with customers. It consists of a backend built with Python and SQL, and a frontend built with React. The backend provides a RESTful API for managing customer interactions, while the frontend provides a user-friendly interface for interacting with the API.
+When an agent signs up, their information is stored in the agents database. After signing up, the agent is directed to a dashboard where they can view a list of clients and interactions.
+
+On the dashboard, agents have the ability to manage both clients and interactions. When an agent adds a new interaction, their ID is automatically associated with that interaction.
+
+Once the agent is done working, they can log out until the next time they need to use the system.
 
 ## Table of Contents
 
@@ -18,6 +22,7 @@ This project is a Customer Service Application designed to manage interactions w
   - [Usage](#usage-1)
 - [Authentication](#authentication)
 - [Database](#database)
+- [Screenshots](#screenshots)
 - [Demo Videos](#demo-videos)
 - [License](#license)
 
@@ -99,7 +104,7 @@ Authentication is implemented using JWT (JSON Web Tokens). When a user logs in, 
 
 ## Database
 
-The project uses PostgreSQL as the database. SQLAlchemy is used for database interactions. Make sure to set up your PostgreSQL database and update the configuration in the `config.py` file.
+The project uses PostgreSQL as the database. SQLAlchemy is used for database interactions. 
 
 ### Database Schema
 
@@ -132,6 +137,36 @@ The project uses PostgreSQL as the database. SQLAlchemy is used for database int
 | Interaction Type | Type of interaction (phone call, email, chat, etc.) |
 | Content         | Details or content of the interaction   |
 | Timestamp       | Date and time when the interaction occurred |
+
+## Screenshots
+
+### Signup Page
+![Signup Page](demo/signup.png)
+
+### Login Page
+![Login Page](demo/login.png)
+
+### Dashboard
+![Dashboard](demo/dashboard.png)
+
+### Customers Tab
+![Customers Tab](demo/customers.png)
+
+### Add Customer
+![Add Customer](demo/add_cutomer.png)
+
+### Update Customer
+![Update Customer](demo/update_customer.png)
+
+### Interactions Tab
+![Interactions Tab](demo/interactions.png)
+
+### Add Interaction
+![Add Interaction](demo/add_interaction.png)
+
+### Update Interaction
+![Update Interaction](demo/update_interaction.png)
+
 
 ## Demo Videos
 
