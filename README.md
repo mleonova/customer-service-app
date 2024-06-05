@@ -1,6 +1,6 @@
 # Customer Interaction Management System
 
-![Customer Interaction Management System](path/to/your/home.png)
+![Customer Interaction Management System](demo/home.png)
 
 ## Project Overview
 
